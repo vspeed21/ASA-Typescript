@@ -1,5 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import Alert from "../../components/Alert";
+import NavLInks from "../../components/NavLInks";
 import validateEmail from "../../helpers/validateEmail";
 
 function SignUp() {
@@ -13,7 +14,7 @@ function SignUp() {
   const [validEmail, setValidEmail] = useState<boolean>(false);
   const [validPassword, setValidPassword] = useState<boolean>(false);
   const [validRepeatPassword, setValidRepeatPassword] = useState<boolean>(false);
-  const [valid, setValid] = useState<boolean>(false)
+  const [valid, setValid] = useState<boolean>(false);
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>):void => {
     if(e.target.id === 'name' && e.target.value.length < 3) {
@@ -69,7 +70,7 @@ function SignUp() {
 
       <div className="mt-8 md:mt-0">
         <form
-          className="bg-white shadow-md p-5 rounded-md mx-4"
+          className="bg-white shadow-md p-8 rounded-md mx-4"
           noValidate
         >
           <div className="flex flex-col gap-2 mb-3">
@@ -165,6 +166,13 @@ function SignUp() {
             />
           </div>
         </form>
+
+        <NavLInks
+          url1="login"
+          text1="Already have an account? Login"
+          url2="forgot-password"
+          text2="Forgot Password?"
+        />
       </div>
     </>
   )
