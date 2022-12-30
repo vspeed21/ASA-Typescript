@@ -1,7 +1,14 @@
 import { ChangeEvent, FormEvent, useState } from "react";
+
 import Alert from "../../components/Alert";
 import NavLInks from "../../components/NavLInks";
 import validateEmail from "../../helpers/validateEmail";
+import adminClient from "../../config/adminClient";
+
+interface Alert {
+  msg: string,
+  error?: boolean,
+}
 
 function SignUp() {
 
@@ -15,6 +22,9 @@ function SignUp() {
   const [validPassword, setValidPassword] = useState<boolean>(false);
   const [validRepeatPassword, setValidRepeatPassword] = useState<boolean>(false);
   const [valid, setValid] = useState<boolean>(false);
+
+  const [alert, setAlert] = useState<Alert>();
+  const [showSpinner, setShowSpinner] = useState<boolean>(false);
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>):void => {
     if(e.target.id === 'name' && e.target.value.length < 3) {
@@ -59,6 +69,37 @@ function SignUp() {
     }
   }
 
+  const handleSubmit = async (e: FormEvent):Promise<void> => {
+    e.preventDefault();
+    
+    try {
+      setShowSpinner(true)
+      const { data } = await adminClient.post('admin', {name, email, password});
+      setAlert({
+        msg: data.msg,
+      });
+      setShowSpinner(false);
+
+      setName('');
+      setEmail('');
+      setPassword('');
+      setRepeatPassword('');
+
+      setTimeout(() => {
+        setAlert({msg: ''});
+      }, 6000);
+      
+    } catch (error:any) {
+      setShowSpinner(false)
+      setAlert({
+        msg: error?.response?.data?.msg,
+        error: true,
+      });
+    }
+
+    
+  }
+
   return (
     <>
       <div className="">
@@ -72,7 +113,9 @@ function SignUp() {
         <form
           className="bg-white shadow-md p-8 rounded-md mx-4"
           noValidate
+          onSubmit={handleSubmit}
         >
+          {alert?.msg ? <Alert msg={alert.msg} error={alert.error}/> : null}
           <div className="flex flex-col gap-2 mb-3">
             <label
               htmlFor="name"
