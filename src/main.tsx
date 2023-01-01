@@ -8,6 +8,7 @@ import SignUp from './pages/auth/SignUp';
 import Login from './pages/auth/Login';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import SavePassword from './pages/auth/SavePassword';
+import Confirm from './pages/auth/Confirm';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
       {
         path: 'signup',
         element: <SignUp/>
+      },
+      {
+        path: 'confirm/:token',
+        element: <Confirm/>
       },
       {
         path: 'login',
@@ -35,7 +40,5 @@ const router = createBrowserRouter([
 ])
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <RouterProvider router={router}/>
-  </React.StrictMode>,
+  <RouterProvider router={router}/>
 )
