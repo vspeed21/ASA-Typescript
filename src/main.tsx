@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 
@@ -9,6 +8,8 @@ import Login from './pages/auth/Login';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import SavePassword from './pages/auth/SavePassword';
 import Confirm from './pages/auth/Confirm';
+
+import AuthProvider from './context/AuthProvider';
 
 const router = createBrowserRouter([
   {
@@ -40,5 +41,7 @@ const router = createBrowserRouter([
 ])
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <RouterProvider router={router}/>
+  <AuthProvider>
+    <RouterProvider router={router}/>
+  </AuthProvider>
 )
