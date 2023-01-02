@@ -1,7 +1,15 @@
 import { ChangeEvent, FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import adminClient from "../../config/adminClient";
 import Alert from "../../components/Alert";
 import NavLInks from "../../components/NavLInks";
 import validateEmail from "../../helpers/validateEmail";
+
+interface Alert {
+  msg: string,
+  error?: boolean,
+}
 
 function Login() {
   const [email, setEmail] = useState<string>('');
@@ -10,6 +18,10 @@ function Login() {
   const [validEmail, setValidEmail] = useState<boolean>(false);
   const [validPassword, setValidPassword] = useState<boolean>(false);
   const [valid, setValid] = useState<boolean>(false);
+
+  const [alert, setAlert] = useState<Alert>();
+
+  const navigate = useNavigate();
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>): void => {
     if (e.target.id === 'email' && validateEmail(e.target.value)) {
@@ -34,6 +46,25 @@ function Login() {
     }
   }
 
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+
+    try {
+      const { data } = await adminClient.post('/admin/login', {email, password});
+      localStorage.setItem('tokenasa', data.token);
+      setValid(false)
+      setValidPassword(false);
+
+      navigate('/')
+
+    } catch (error: any) {
+      setAlert({
+        msg: error.response.data.msg,
+        error: true,
+      });
+    }
+  }
+
   return (
     <>
       <div className="">
@@ -47,7 +78,9 @@ function Login() {
         <form
           className="bg-white shadow-md p-8 rounded-md mx-4"
           noValidate
+          onSubmit={handleSubmit}
         >
+          {alert?.msg ? <Alert msg={alert.msg} error={alert.error} /> : null }
           <div className="flex flex-col gap-2 mb-3">
             <label
               htmlFor="email"
