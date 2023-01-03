@@ -13,6 +13,8 @@ import AuthProvider from './context/AuthProvider';
 import AdminLayout from './layout/AdminLayout';
 import AdminAccounts from './pages/admin/AdminAccounts';
 import ProfileProvider from './context/ProfileProvider';
+import ProfileInfo from './pages/admin/ProfileInfo';
+import ChangePassword from './pages/admin/ChangePassword';
 
 const router = createBrowserRouter([
   {
@@ -23,6 +25,14 @@ const router = createBrowserRouter([
         index: true,
         element: <AdminAccounts/>
       },
+      {
+        path: 'admin/profile-info',
+        element: <ProfileInfo/>
+      },
+      {
+        path: 'admin/change-password',
+        element: <ChangePassword/>
+      }
     ]
   },
 
