@@ -10,8 +10,21 @@ import SavePassword from './pages/auth/SavePassword';
 import Confirm from './pages/auth/Confirm';
 
 import AuthProvider from './context/AuthProvider';
+import AdminLayout from './layout/AdminLayout';
+import AdminAccounts from './pages/admin/AdminAccounts';
 
 const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <AdminLayout/>,
+    children: [
+      {
+        index: true,
+        element: <AdminAccounts/>
+      },
+    ]
+  },
+
   {
     path: '/auth',
     element: <AuthLayout/>,
