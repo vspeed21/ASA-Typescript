@@ -17,6 +17,7 @@ export type Profile = {
 
 export type ContextProfileProps = {
   saveProfile: (profile: Profile) => void
+  profiles: Profile[]
 }
 
 export type ContextAuthProps = {
