@@ -15,8 +15,11 @@ export type Profile = {
   deadline: string,
 }
 
+export type ContextProfileProps = {
+  saveProfile: (profile: Profile) => void
+}
+
 export type ContextAuthProps = {
   auth: Admin,
   loading: boolean,
-  saveProfile: (profile: Profile) => void
 }
