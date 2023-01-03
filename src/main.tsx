@@ -12,6 +12,7 @@ import Confirm from './pages/auth/Confirm';
 import AuthProvider from './context/AuthProvider';
 import AdminLayout from './layout/AdminLayout';
 import AdminAccounts from './pages/admin/AdminAccounts';
+import ProfileProvider from './context/ProfileProvider';
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <AuthProvider>
-    <RouterProvider router={router}/>
+    <ProfileProvider>
+      <RouterProvider router={router}/>
+    </ProfileProvider>
   </AuthProvider>
 )
