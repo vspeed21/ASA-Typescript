@@ -1,5 +1,7 @@
 import { FormEvent, useState } from "react";
 import Alert from "./Alert";
+import { ContextProfileProps } from "../context/types";
+import useProfile from "../hooks/useProfile";
 
 interface Alert {
   msg: string,
@@ -13,6 +15,8 @@ function FormAcc() {
   const [deadline, setDeadline] = useState<string>('');
 
   const [alert, setAlert] = useState<Alert>();
+
+  const { saveProfile } = useProfile() as ContextProfileProps;
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -33,11 +37,7 @@ function FormAcc() {
       msg: ''
     });
 
-    try {
-      
-    } catch (error) {
-      console.log(error);
-    }
+    saveProfile({name, screen, pin, deadline});
   }
 
   return (
