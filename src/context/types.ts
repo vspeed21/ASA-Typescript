@@ -9,4 +9,5 @@ export type Admin = {
 
 export type ContextAuthProps = {
   auth: Admin,
+  loading: boolean,
 }
