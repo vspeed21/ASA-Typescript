@@ -8,7 +8,8 @@ interface Props {
 
 export const ProfileContext = createContext({});
 
-function AuthProvider({children}: Props) {
+function ProfileProvider({children}: Props) {
+  const [profiles, setProfiles] = useState<Profile[]>();
   
   const token = localStorage.getItem('tokenasa');
   const config = {
@@ -17,6 +18,18 @@ function AuthProvider({children}: Props) {
       authorization: `Bearer ${token}`
     }
   }
+
+  useEffect(() => {
+    getProfiles();
+    async function getProfiles() {
+      try {
+        const { data } = await adminClient('/profile', config);
+        setProfiles(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, []);
 
   async function saveProfile(profile: Profile) {
     try {
@@ -30,7 +43,8 @@ function AuthProvider({children}: Props) {
   return (
     <ProfileContext.Provider
       value={{
-        saveProfile
+        saveProfile,
+        profiles,
       }}
     >
       {children}
@@ -38,4 +52,4 @@ function AuthProvider({children}: Props) {
   )
 }
 
-export default AuthProvider;
+export default ProfileProvider;
