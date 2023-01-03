@@ -22,7 +22,7 @@ function Header() {
           ): null}
 
           <Link
-            to="/admin/profile"
+            to="/admin/profile-info"
             className="text-gray-400 uppercase hover:text-gray-100 transition-colors duration-300"
           >
             profile
