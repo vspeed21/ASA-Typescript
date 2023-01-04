@@ -10,6 +10,7 @@ export const ProfileContext = createContext({});
 
 function ProfileProvider({children}: Props) {
   const [profiles, setProfiles] = useState<Profile[]>();
+  const [profile, setProfile] = useState<Profile>();
   
   const token = localStorage.getItem('tokenasa');
   const config = {
@@ -45,6 +46,8 @@ function ProfileProvider({children}: Props) {
       value={{
         saveProfile,
         profiles,
+        setProfile,
+        profile,
       }}
     >
       {children}
