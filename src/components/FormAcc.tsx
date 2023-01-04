@@ -1,6 +1,5 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import Alert from "./Alert";
-import { ContextProfileProps } from "../context/types";
 import useProfile from "../hooks/useProfile";
 
 interface Alert {
@@ -13,10 +12,21 @@ function FormAcc() {
   const [screen, setScreen] = useState<string>('');
   const [pin, setPin] = useState<number>();
   const [deadline, setDeadline] = useState<string>('');
+  const [_id, set_id] = useState<string | null>(null);
 
   const [alert, setAlert] = useState<Alert>();
 
-  const { saveProfile } = useProfile() as ContextProfileProps;
+  const { saveProfile, profile } = useProfile();
+
+  useEffect(() => {
+    if(profile?._id) {
+      setName(profile?.name)
+      setScreen(profile?.screen);
+      setPin(profile?.pin);
+      setDeadline(profile?.deadline);
+      set_id(profile._id);
+    }
+  }, [profile]);
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -37,7 +47,13 @@ function FormAcc() {
       msg: ''
     });
 
-    saveProfile({name, screen, pin, deadline});
+    saveProfile({name, screen, pin, deadline, _id});
+
+    setName('');
+    setScreen('');
+    setPin(0);
+    setDeadline('');
+    set_id('');
   }
 
   return (
@@ -131,7 +147,7 @@ function FormAcc() {
 
         <input
           type="submit"
-          value="save profile"
+          value={`${profile?._id ? "Update Profile": "save profile"}`}
           className='py-1 px-5 text-center w-full text-white uppercase rounded-md text-lg font-bold transition-colors duration-300 mt-1 bg-blue-600  hover:bg-blue-700 hover:cursor-pointer'
         />
       </form>

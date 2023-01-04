@@ -8,7 +8,7 @@ export type Admin = {
 }
 
 export type Profile = {
-  _id?: string,
+  _id?: string | null,
   name: string,
   screen: string,
   pin?: number,

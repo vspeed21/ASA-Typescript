@@ -9,8 +9,8 @@ interface Props {
 export const ProfileContext = createContext({});
 
 function ProfileProvider({children}: Props) {
-  const [profiles, setProfiles] = useState<Profile[]>();
-  const [profile, setProfile] = useState<Profile>();
+  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [profile, setProfile] = useState<Partial<Profile>>({});
   
   const token = localStorage.getItem('tokenasa');
   const config = {
@@ -30,14 +30,24 @@ function ProfileProvider({children}: Props) {
         console.log(error);
       }
     }
-  }, []);
+  }, [profile]);
 
   async function saveProfile(profile: Profile) {
-    try {
-      const { data } = await adminClient.post('/profile', profile, config);
-      console.log(data);
-    } catch (error) {
-      console.log(error);
+    if(profile?._id) {
+      try {
+        const { data } = await adminClient.put(`/profile/${profile._id}`, profile, config);
+        const profilesUpdated = profiles?.map(pro => pro._id === data._id  ? data : pro);
+        setProfiles(profilesUpdated);
+      } catch (error) {
+        console.log(error);
+      }
+    }else{
+      try {
+        const { data } = await adminClient.post('/profile', profile, config);
+        setProfiles([data.profile, ...profiles]);
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
