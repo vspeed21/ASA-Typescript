@@ -26,4 +26,5 @@ export type ContextProfileProps = {
 export type ContextAuthProps = {
   auth: Admin,
   loading: boolean,
+  updateProfile: (profileAdmin: Admin) => void
 }
