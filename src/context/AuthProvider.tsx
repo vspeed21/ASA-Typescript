@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import adminClient from "../config/adminClient";
+import { Admin, Profile } from "./types";
 
 export const AuthContext = createContext({});
 
@@ -38,11 +39,24 @@ function AuthProvider({children}: Props) {
     }
   }, []);
 
+
+  async function updateProfile(admin:Admin) {
+    if(!token) return;
+
+    try {
+      const { data } = await adminClient.put(`/admin/profile/${admin._id}`, admin, config);
+      return data.msg as string
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <AuthContext.Provider
       value={{
         auth,
         loading,
+        updateProfile
       }}
     >
       {children}
