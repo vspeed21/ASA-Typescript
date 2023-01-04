@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import swal from "sweetalert";
 import adminClient from "../config/adminClient";
 import { Profile } from "./types";
 
@@ -30,7 +31,7 @@ function ProfileProvider({children}: Props) {
         console.log(error);
       }
     }
-  }, [profile]);
+  }, []);
 
   async function saveProfile(profile: Profile) {
     if(profile?._id) {
@@ -51,6 +52,22 @@ function ProfileProvider({children}: Props) {
     }
   }
 
+  function deleteProfile(id?:string | null) {
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover profile information",
+      icon: "warning",
+      dangerMode: true,
+    })
+    .then(async (willDelete) => {
+      if(willDelete) {
+        await adminClient.delete(`/profile/${id}`, config);
+        const newProfiles = profiles.filter(pro => pro._id !== id);
+        setProfiles(newProfiles);
+      }
+    });
+  }
+
   return (
     <ProfileContext.Provider
       value={{
@@ -58,6 +75,7 @@ function ProfileProvider({children}: Props) {
         profiles,
         setProfile,
         profile,
+        deleteProfile,
       }}
     >
       {children}

@@ -20,6 +20,7 @@ export type ContextProfileProps = {
   profiles: Profile[]
   setProfile: (profile: Profile) => void
   profile: Profile,
+  deleteProfile: (id: string | null) => void;
 }
 
 export type ContextAuthProps = {

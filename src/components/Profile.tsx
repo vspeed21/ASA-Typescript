@@ -6,10 +6,10 @@ interface Props {
 }
 
 function ProfileAcc({profile}: Props) {
-  const { setProfile } = useProfile();
+  const { setProfile, deleteProfile } = useProfile();
 
   return (
-    <div className="bg-white shadow p-5 flex flex-col gap-1">
+    <div className="bg-white shadow p-5 flex flex-col gap-1 mb-3">
       <p className="text-gray-700 font-bold">
         Profile Owner: {''}
         <span className="capitalize font-normal">{profile.name}</span>
@@ -41,6 +41,7 @@ function ProfileAcc({profile}: Props) {
         <button
           type="button"
           className="bg-red-600 text-white py-1 px-3 rounded hover:bg-red-800 font-bold transition-colors duration-300"
+          onClick={() => deleteProfile(profile?._id || '')}
         >
           Delete
         </button>
