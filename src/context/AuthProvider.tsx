@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import adminClient from "../config/adminClient";
-import { Admin, Profile } from "./types";
+import { Admin, Passwords } from "./types";
 
 export const AuthContext = createContext({});
 
@@ -51,12 +51,24 @@ function AuthProvider({children}: Props) {
     }
   }
 
+  async function changePassword(passwords: Passwords) {
+    if(!token) return;
+
+    try {
+      const { data } = await adminClient.put('/admin/change-password', passwords, config);
+      return data.msg
+    } catch (error: any) {
+      return error?.response?.data.msg;
+    }
+  }
+
   return (
     <AuthContext.Provider
       value={{
         auth,
         loading,
-        updateProfile
+        updateProfile,
+        changePassword,
       }}
     >
       {children}
