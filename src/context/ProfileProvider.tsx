@@ -39,6 +39,7 @@ function ProfileProvider({children}: Props) {
         const { data } = await adminClient.put(`/profile/${profile._id}`, profile, config);
         const profilesUpdated = profiles?.map(pro => pro._id === data._id  ? data : pro);
         setProfiles(profilesUpdated);
+        setProfile({});
       } catch (error) {
         console.log(error);
       }
