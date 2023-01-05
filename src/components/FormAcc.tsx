@@ -1,4 +1,4 @@
-import { FormEvent, useState, useEffect } from "react";
+import { FormEvent, useState, useEffect, ChangeEvent } from "react";
 import Alert from "./Alert";
 import useProfile from "../hooks/useProfile";
 
@@ -10,7 +10,7 @@ interface Alert {
 function FormAcc() {
   const [name, setName] = useState<string>('');
   const [screen, setScreen] = useState<string>('');
-  const [pin, setPin] = useState<number>();
+  const [pin, setPin] = useState<number>(0);
   const [deadline, setDeadline] = useState<string>('');
   const [_id, set_id] = useState<string | null>(null);
 
@@ -19,12 +19,12 @@ function FormAcc() {
   const { saveProfile, profile } = useProfile();
 
   useEffect(() => {
-    if(profile?._id) {
-      setName(profile?.name)
-      setScreen(profile?.screen);
-      setPin(profile?.pin);
-      setDeadline(profile?.deadline);
-      set_id(profile._id);
+    if(profile?.name) {
+      setName(profile.name)
+      setScreen(profile.screen);
+      setPin(profile.pin || 0);
+      setDeadline(profile.deadline);
+      set_id(profile._id || '');
     }
   }, [profile]);
 
@@ -121,6 +121,11 @@ function FormAcc() {
             onChange={e => setPin(Number(e.target.value))}
             maxLength={4}
             pattern="[0-9]*"
+            onInput={(e: ChangeEvent<HTMLInputElement>) => {
+              if(e.target.value.length > 4) {
+                e.target.value = e.target.value.slice(0, 4);
+              }
+            }}
           />
         </div>
 
