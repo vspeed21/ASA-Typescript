@@ -15,9 +15,9 @@ function ChangePassword() {
     new: '',
   });
   const [alert, setAlert] = useState<Alert>();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const { changePassword } = useAuth();
-  const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -70,7 +70,7 @@ function ChangePassword() {
           </label>
 
           <input
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             id="current"
             name="current"
             className="border bg-gray-100 p-1 pl-3 rounded focus:shadow focus:outline-blue-600 placeholder:text-gray-900"
@@ -92,7 +92,7 @@ function ChangePassword() {
           </label>
 
           <input
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             id="new"
             name="new"
             className="border bg-gray-100 p-1 pl-3 rounded focus:shadow focus:outline-blue-600 placeholder:text-gray-900"
@@ -103,6 +103,14 @@ function ChangePassword() {
               [e.target.name]: e.target.value
             })}
           />
+        </div>
+        
+        <div className="flex gap-1 items-center">
+          <input 
+            type="checkbox"
+            onClick={() => setShowPassword(!showPassword)}
+          />
+          <p>{showPassword ? 'Hide Passwords' : 'Show Passwords'}</p>
         </div>
 
         <div className="flex md:justify-end mt-6">
