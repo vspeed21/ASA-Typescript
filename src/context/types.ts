@@ -15,6 +15,11 @@ export type Profile = {
   deadline: string,
 }
 
+export interface Passwords {
+  current: string
+  new: string
+}
+
 export type ContextProfileProps = {
   saveProfile: (profile: Profile) => void
   profiles: Profile[]
@@ -27,4 +32,5 @@ export type ContextAuthProps = {
   auth: Admin,
   loading: boolean,
   updateProfile: (profileAdmin: Admin) => void
+  changePassword: (passwords: Passwords) => void,
 }
