@@ -33,4 +33,5 @@ export type ContextAuthProps = {
   loading: boolean,
   updateProfile: (profileAdmin: Admin) => void
   changePassword: (passwords: Passwords) => void,
+  logOut: () => void
 }
