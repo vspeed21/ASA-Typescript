@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import adminClient from '../../config/adminClient';
 import Alert from '../../components/Alert';
+import Spinner from '../../components/Spinner';
 
 interface Alert {
   msg: string,
@@ -45,7 +46,12 @@ function Confirm() {
       </div>
 
       <div className="mt-8 md:mt-0 bg-white shadow-md p-8 rounded-md mx-4">
-        {loading ? 'loading...' : null }
+        {loading ? (
+          <div className="flex flex-col gap-2 items-center">
+            <Spinner/>
+            <p className="font-bold">Please wait...</p>
+          </div>
+        ) : null }
         {alert?.msg ? <Alert msg={alert.msg} error={alert.error} /> : null }
       
       {confirmed && (

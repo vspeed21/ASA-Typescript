@@ -2,6 +2,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 
 import Alert from "../../components/Alert";
 import NavLInks from "../../components/NavLInks";
+import Spinner from "../../components/Spinner";
 import validateEmail from "../../helpers/validateEmail";
 import adminClient from "../../config/adminClient";
 
@@ -115,6 +116,13 @@ function SignUp() {
           noValidate
           onSubmit={handleSubmit}
         >
+          {showSpinner ? (
+            <div className="flex flex-col gap-2 items-center">
+              <Spinner/>
+              <p className="font-bold">Please wait...</p>
+            </div>
+          ) : null}
+
           {alert?.msg ? <Alert msg={alert.msg} error={alert.error}/> : null}
           <div className="flex flex-col gap-2 mb-3">
             <label

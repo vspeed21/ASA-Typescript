@@ -5,6 +5,7 @@ import adminClient from "../../config/adminClient";
 import Alert from "../../components/Alert";
 import NavLInks from "../../components/NavLInks";
 import validateEmail from "../../helpers/validateEmail";
+import Spinner from "../../components/Spinner";
 
 interface Alert {
   msg: string,
@@ -20,6 +21,7 @@ function Login() {
   const [valid, setValid] = useState<boolean>(false);
 
   const [alert, setAlert] = useState<Alert>();
+  const [showSpinner, setShowSpinner] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -50,14 +52,17 @@ function Login() {
     e.preventDefault();
 
     try {
+      setShowSpinner(true);
       const { data } = await adminClient.post('/admin/login', {email, password});
       localStorage.setItem('tokenasa', data.token);
       setValid(false)
       setValidPassword(false);
 
       navigate('/')
+      setShowSpinner(false)
 
     } catch (error: any) {
+      setShowSpinner(false);
       setAlert({
         msg: error.response.data.msg,
         error: true,
@@ -80,6 +85,13 @@ function Login() {
           noValidate
           onSubmit={handleSubmit}
         >
+          {showSpinner ? (
+            <div className="flex flex-col gap-2 items-center">
+              <Spinner/>
+              <p className="font-bold">Please wait...</p>
+            </div>
+          ) : null}
+
           {alert?.msg ? <Alert msg={alert.msg} error={alert.error} /> : null }
           <div className="flex flex-col gap-2 mb-3">
             <label

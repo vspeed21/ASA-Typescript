@@ -2,6 +2,7 @@ import { FormEvent, useState } from "react";
 
 import Alert from "../../components/Alert";
 import NavLInks from "../../components/NavLInks";
+import Spinner from "../../components/Spinner";
 import adminClient from "../../config/adminClient";
 import validateEmail from "../../helpers/validateEmail";
 
@@ -14,6 +15,7 @@ function ForgotPassword() {
 
   const [email, setEmail] = useState<string>('')
   const [alert, setAlert] = useState<Alert>();
+  const [showSpinner, setShowSpinner] = useState<boolean>(false);
 
   const handleSubmit = async (e: FormEvent):Promise<void> => {
     e.preventDefault();
@@ -30,10 +32,13 @@ function ForgotPassword() {
     }
 
     try {
+      setShowSpinner(true);
       const {data} = await adminClient.post("/admin/forgot-password", {email});
       setAlert({msg: data.msg,});
+      setShowSpinner(false);
 
     } catch (error: any) {
+      setShowSpinner(false);
       setAlert({
         msg: error?.response.data.msg,
         error: true,
@@ -57,6 +62,13 @@ function ForgotPassword() {
           noValidate
           onSubmit={handleSubmit}
         >
+          {showSpinner ? (
+            <div className="flex flex-col gap-2 items-center">
+              <Spinner/>
+              <p className="font-bold">Please wait...</p>
+            </div>
+          ) : null}
+
           {alert?.msg ? <Alert msg={alert.msg} error={alert.error}/> : null}
 
           <div className="flex flex-col gap-2 mb-3">
