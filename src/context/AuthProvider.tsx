@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from "react";
+import swal from "sweetalert";
 import adminClient from "../config/adminClient";
 import { Admin, Passwords } from "./types";
 
@@ -62,6 +63,20 @@ function AuthProvider({children}: Props) {
     }
   }
 
+  async function logOut() {
+    swal({
+      title: "Are you sure to log out?",
+      icon: "warning",
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if(willDelete) {
+        localStorage.removeItem('tokenasa');
+        setAuth({});
+      }
+    });
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -69,6 +84,7 @@ function AuthProvider({children}: Props) {
         loading,
         updateProfile,
         changePassword,
+        logOut
       }}
     >
       {children}

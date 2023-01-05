@@ -1,7 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 function Header() {
   const location = useLocation();
+
+  const { logOut } = useAuth();
 
   return (
     <header className="bg-gray-700 text-white p-5">
@@ -30,7 +33,7 @@ function Header() {
           <button
             type="button"
             className="text-gray-400 uppercase hover:text-gray-100 transition-colors duration-300"
-            // onClick={logOut}
+            onClick={logOut}
           >
             Logout
           </button>
