@@ -1,5 +1,5 @@
 import { FormEvent, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Alert from "../../components/Alert";
 import { Admin } from "../../context/types";
 import useAuth from "../../hooks/useAuth";
@@ -19,12 +19,14 @@ function ProfileInfo() {
     confirmed: true,
   });
   const [alert, setAlert] = useState<Alert>();
+  const [editProfile, setEditProfile] = useState<boolean>(false);
 
   const { updateProfile, auth } = useAuth();
 
   useEffect(() => {
     setProfileAdmin(auth);
   }, []);
+  const navigate = useNavigate();
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -38,6 +40,11 @@ function ProfileInfo() {
         msg: '',
       })
     }, 3000);
+    setEditProfile(false);
+    
+    setTimeout(() => {
+      navigate('/')
+    }, 2000);
   }
 
   return (
@@ -55,6 +62,15 @@ function ProfileInfo() {
         noValidate
       >
         {alert?.msg ? <Alert msg={alert.msg} /> : null}
+        <div className="flex justify-center md:justify-end">
+          <button
+            type="button"
+            className="text-sm opacity-90 hover:underline"
+            onClick={() => setEditProfile(!editProfile)}
+          >
+            Edit
+          </button>
+        </div>
         <div className="flex flex-col gap-2 mb-5">
           <label
             htmlFor="name"
@@ -67,13 +83,15 @@ function ProfileInfo() {
             type="text"
             id="name"
             name="name"
-            className="border bg-gray-100 p-1 pl-3 rounded focus:shadow focus:outline-blue-600 placeholder:text-gray-900"
+            className={`border p-1 pl-3 rounded focus:shadow focus:outline-blue-600 placeholder:text-gray-900 ${!editProfile ? 'bg-gray-400': 'bg-gray-100'}`}
             placeholder="Enter your name"
             value={profileAdmin.name || ''}
             onChange={e => setProfileAdmin({
               ...profileAdmin,
               [e.target.name]: e.target.value
             })}
+            readOnly={!editProfile ? true : false}
+            autoFocus={editProfile ? true : false}
           />
         </div>
 
@@ -89,13 +107,14 @@ function ProfileInfo() {
             type="email"
             id="email"
             name="email"
-            className="border bg-gray-100 p-1 pl-3 rounded focus:shadow focus:outline-blue-600 placeholder:text-gray-900"
+            className={`border p-1 pl-3 rounded focus:shadow focus:outline-blue-600 placeholder:text-gray-900 ${!editProfile ? 'bg-gray-400': 'bg-gray-100'}`}
             placeholder="Enter your email"
             value={profileAdmin.email || ''}
             onChange={e => setProfileAdmin({
               ...profileAdmin,
               [e.target.name]: e.target.value
             })}
+            readOnly={!editProfile ? true : false}
           />
         </div>
 
@@ -103,7 +122,8 @@ function ProfileInfo() {
           <input
             type="submit"
             value="save"
-            className='py-1 px-5 text-center w-full md:w-auto text-white uppercase rounded-md text-lg font-bold transition-colors duration-300 bg-blue-700 hover:bg-blue-800 hover:cursor-pointer'
+            disabled={editProfile ? false : true}
+            className={`py-1 px-5 text-center w-full md:w-auto text-white uppercase rounded-md text-lg font-bold transition-colors duration-300 ${editProfile ? 'bg-blue-700 hover:bg-blue-800 hover:cursor-pointer': 'bg-blue-100 hover:bg-blue-100 hover:cursor-not-allowed'}`}
           />
         </div>
       </form>
