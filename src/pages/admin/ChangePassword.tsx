@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Alert from "../../components/Alert";
 import { Passwords } from "../../context/types";
@@ -16,6 +16,7 @@ function ChangePassword() {
   });
   const [alert, setAlert] = useState<Alert>();
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [valid, setValid] = useState<boolean>(false);
 
   const { changePassword } = useAuth();
 
@@ -44,6 +45,17 @@ function ChangePassword() {
       current: '',
       new: '',
     });
+  }
+
+  function handleInput(e: ChangeEvent<HTMLInputElement>) {
+    if(e.target.name === 'new' && e.target.value.length < 8) {
+      setValid(true);
+      return;
+    }
+    if(e.target.name === 'new' && e.target.value.length >= 8) {
+      setValid(false);
+      return;
+    }
   }
 
   return (
@@ -102,7 +114,10 @@ function ChangePassword() {
               ...passwords,
               [e.target.name]: e.target.value
             })}
+            onInput={handleInput}
           />
+
+          {valid ? <Alert msg="Short password" error={true} /> : null}
         </div>
         
         <div className="flex gap-1 items-center">
