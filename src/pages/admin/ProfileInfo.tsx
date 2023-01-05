@@ -1,6 +1,7 @@
 import { FormEvent, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Alert from "../../components/Alert";
+import Spinner from "../../components/Spinner";
 import { Admin } from "../../context/types";
 import useAuth from "../../hooks/useAuth";
 
@@ -20,6 +21,7 @@ function ProfileInfo() {
   });
   const [alert, setAlert] = useState<Alert>();
   const [editProfile, setEditProfile] = useState<boolean>(false);
+  const [showSpinner, setShowSpinner] = useState<boolean>(false);
 
   const { updateProfile, auth } = useAuth();
 
@@ -31,7 +33,9 @@ function ProfileInfo() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
+    setShowSpinner(true);
     const data = await updateProfile(profileAdmin) as unknown;
+    setShowSpinner(false);
     setAlert({
       msg: data as string
     });
@@ -61,6 +65,13 @@ function ProfileInfo() {
         onSubmit={handleSubmit}
         noValidate
       >
+        {showSpinner ? (
+          <div className="flex flex-col gap-2 items-center">
+            <Spinner/>
+            <p className="font-bold">Please wait...</p>
+          </div>
+          ) : null}
+
         {alert?.msg ? <Alert msg={alert.msg} /> : null}
         <div className="flex justify-center md:justify-end">
           <button

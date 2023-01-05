@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Alert from "../../components/Alert";
+import Spinner from "../../components/Spinner";
 import { Passwords } from "../../context/types";
 import useAuth from "../../hooks/useAuth";
 
@@ -15,6 +16,7 @@ function ChangePassword() {
     new: '',
   });
   const [alert, setAlert] = useState<Alert>();
+  const [showSpinner, setShowSpinner] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [valid, setValid] = useState<boolean>(false);
 
@@ -36,7 +38,9 @@ function ChangePassword() {
       return;
     }
     
+    setShowSpinner(true);
     const data = await changePassword(passwords) as unknown;
+    setShowSpinner(false);
     setAlert({
       msg: data as string,
       error: true,
@@ -72,6 +76,13 @@ function ChangePassword() {
         onSubmit={handleSubmit}
         noValidate
       >
+        {showSpinner ? (
+          <div className="flex flex-col gap-2 items-center">
+            <Spinner/>
+            <p className="font-bold">Please wait...</p>
+          </div>
+        ) : null}
+
         {alert?.msg ? <Alert msg={alert.msg} error={alert.msg === 'Password modified successfully' ? false : alert.error} /> : null}
         <div className="flex flex-col gap-2 mb-5">
           <label
