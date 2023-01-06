@@ -58,7 +58,7 @@ function Login() {
       setValid(false)
       setValidPassword(false);
 
-      navigate('/')
+      window.location.href = '/'
       setShowSpinner(false)
 
     } catch (error: any) {
