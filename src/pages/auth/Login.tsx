@@ -75,7 +75,7 @@ function Login() {
       <div className="">
         <h1 className="text-5xl md:text-6xl lg:text-7xl text-red-500 font-black text-center md:text-left">
           Login and start managing {''}
-          <span className="text-black">your profiles</span>
+          <span className="text-black">your profiles </span>
         </h1>
       </div>
 
